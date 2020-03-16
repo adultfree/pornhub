@@ -57,7 +57,7 @@ DOWNLOAD_VIDEO = False
 
 #### 下载状态
 
-![下载状态](https://raw.githubusercontent.com/adultfree/pornhub/master/images/download_state.png)
+![下载状态](https://raw.githubusercontent.com/adultfree/pornhub/master/images/download_xunlei.png)
 
 ## 补充说明
 
