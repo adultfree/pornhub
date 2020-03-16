@@ -1,0 +1,7 @@
+scrapy
+pillow
+pysocks
+lxml
+js2py
+clint
+fire
