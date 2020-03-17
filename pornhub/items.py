@@ -14,6 +14,7 @@ class WebmItem(scrapy.Item):
 
 class Mp4Item(scrapy.Item):
     url = scrapy.Field()
+    key = scrapy.Field()
     title = scrapy.Field()
     categories = scrapy.Field()
     uploader = scrapy.Field()

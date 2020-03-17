@@ -12,11 +12,11 @@
 
 思来想去，决定还是花点时间，参考Github上其他同志的代码，做一个简单的爬虫吧。
 
-## 爬取的板块
+## 爬取的内容
 
-无论爬取视频链接还是下载视频，都会消耗梯子的流量，因此我没有深入研究这部分。
+本程序提供自定义深度的视频爬取，即获得爬取的页面后，继续下载其推荐栏目的页面。
 
-本程序仅提供[评分最高(TopRated)](https://www.pornhub.com/video?o=tr)页面的所有视频链接提取。
+目前提供[评分最高(TopRated)](https://www.pornhub.com/video?o=tr)页面的所有视频爬取，也提供仅对你感兴趣的某个视频进行下载。
 
 ## 使用方法
 
@@ -28,26 +28,39 @@ Python 3.5.2
 # 安装依赖包
 root@adultfree:~/pornhub# python3 -m pip install -r requirements.txt
 ......
-# 开始爬取亚洲BT
+# 开始爬取评分最高的部分视频(及其推荐视频)
 root@adultfree:~/pornhub# scrapy crawl top_rated
+
+# 开始爬取感兴趣的某个视频(及其推荐视频)
+root@adultfree:~/pornhub# scrapy crawl related_show
 ```
 
 ## 注意事项
 
-注意pornhub/settings.py中的该选项
+注意pornhub/settings.py中的下载选项
 
 ```python
-# 当DOWNLOAD_VIDEO设为True时，程序会视图下载电影
-# 在大陆地区下载速度非常慢，因此强烈建议仅获取地址
-# 将地址批量拷贝，放入迅雷中下载，速度会快很多
-DOWNLOAD_VIDEO = False
+# 当DOWNLOAD_MP4_VIDEO设为True时，程序会试图下载视频
+# 在大陆地区下载速度非常慢，因此强烈建议仅获取地址(设为False)
+# 当以下两项设为False时，视频链接会被保存到"日期-时间-类型.log"文件中
+# 打开文件，将地址批量拷贝，放入迅雷中下载，速度会快很多
+DOWNLOAD_MP4_VIDEO = False
+DOWNLOAD_WEBM_VIDEO = False
 ```
 
-默认情况下，只会把爬取到的视频以INFO的形式保存在文件中。
-打开文件，选中并复制所有带“下载地址”的行。再打开迅雷，新建任务，粘贴即可开始迅雷批量下载。
-你也可以选择注释`LOG_FILE`那一行，这样打出的结果会直接打印到屏幕上。
+注意下载深度，默认只提取当前页面的视频。
+* 对related_show而言，只下载`RelatedShow.py`中指定的视频
+* 对top_rated而言，只下载主页上展示的所有视频
 
-另外，我仅提取了画质最高的版本链接。毕竟越清晰，就越真实 :-)
+```python
+# 将该视频内的相关视频也下载下来
+CRAWL_RELATED_VIDEOS = True
+# 相关视频下载的深度，默认下载当前页面的视频(不下载相关视频)
+# 注意：每增加一层深度，下载视频数会呈指数级增加
+CRAWL_RELATED_DEPTH = 1
+```
+
+另外，我仅提取画质最高的版本链接。毕竟越清晰，就越真实 :-)
 
 ## 效果展示
 

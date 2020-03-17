@@ -17,9 +17,10 @@ NEWSPIDER_MODULE = 'pornhub.spiders'
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 # USER_AGENT = 'pornhub (+http://www.yourdomain.com)'
 
-# 当DOWNLOAD_VIDEO设为True时，程序会视图下载电影
-# 在大陆地区下载速度非常慢，因此强烈建议仅获取地址
-# 将地址批量拷贝，放入迅雷中下载，速度会快很多
+# 当DOWNLOAD_MP4_VIDEO设为True时，程序会试图下载视频
+# 在大陆地区下载速度非常慢，因此强烈建议仅获取地址(设为False)
+# 当以下两项设为False时，视频链接会被保存到"日期-时间-类型.log"文件中
+# 打开文件，将地址批量拷贝，放入迅雷中下载，速度会快很多
 DOWNLOAD_MP4_VIDEO = False
 DOWNLOAD_WEBM_VIDEO = False
 
@@ -33,6 +34,9 @@ CRAWL_RELATED_DEPTH = 1
 CATEGORY_BLACK_LIST = [
     # 'Big Dick',
     # 'Cumshot',
+]
+
+TAGS_BLACK_LIST = [
 ]
 
 # Obey robots.txt rules

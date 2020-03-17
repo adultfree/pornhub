@@ -1,7 +1,10 @@
-from pornhub import settings
-from pornhub.items import *
+import pickle
 import re
+
 import js2py
+
+from pornhub import settings, data
+from pornhub.items import *
 
 
 class Spider(scrapy.Spider):
@@ -12,6 +15,7 @@ class Spider(scrapy.Spider):
     def parse_detail(self, response):
         depth = response.request.meta["depth"]
         item = Mp4Item()
+        item['key'] = response.request.url.split("=")[-1]
         item['title'] = ''.join(response.xpath('//h1//text()').extract()).strip()
         item['categories'] = list(map(lambda x: x.strip(), response.xpath('//div[@class="categoriesWrapper"]/a/text()').extract()))
         item['uploader'] = response.xpath('//div[@class="video-info-row"]/div/span[@class="usernameBadgesWrapper"]/a/text()').extract_first()
@@ -52,6 +56,10 @@ class Spider(scrapy.Spider):
             item["title"] = title
             items.append(item)
         return items
+
+    def closed(self, reason):
+        with open('./data.pkl', 'wb') as f:
+            pickle.dump(data, f, pickle.HIGHEST_PROTOCOL)
 
     def exeJs(self, js):
         flashvars = re.findall('flashvars_\d+', js)[0]
