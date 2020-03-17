@@ -8,9 +8,15 @@ import scrapy
 
 class WebmItem(scrapy.Item):
     url = scrapy.Field()
-    name = scrapy.Field()
+    key = scrapy.Field()
+    title = scrapy.Field()
 
 
 class Mp4Item(scrapy.Item):
     url = scrapy.Field()
-    name = scrapy.Field()
+    title = scrapy.Field()
+    categories = scrapy.Field()
+    uploader = scrapy.Field()
+    pornstars = scrapy.Field()
+    productions = scrapy.Field()
+    tags = scrapy.Field()

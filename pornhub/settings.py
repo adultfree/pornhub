@@ -20,7 +20,20 @@ NEWSPIDER_MODULE = 'pornhub.spiders'
 # 当DOWNLOAD_VIDEO设为True时，程序会视图下载电影
 # 在大陆地区下载速度非常慢，因此强烈建议仅获取地址
 # 将地址批量拷贝，放入迅雷中下载，速度会快很多
-DOWNLOAD_VIDEO = False
+DOWNLOAD_MP4_VIDEO = False
+DOWNLOAD_WEBM_VIDEO = False
+
+# 将该视频内的相关视频也下载下来
+CRAWL_RELATED_VIDEOS = True
+# 相关视频下载的深度，默认下载当前页面的视频(不下载相关视频)
+# 注意：每增加一层深度，下载视频数会呈指数级增加
+CRAWL_RELATED_DEPTH = 1
+
+# 以下类型的视频不下载(暂未实现)
+CATEGORY_BLACK_LIST = [
+    # 'Big Dick',
+    # 'Cumshot',
+]
 
 # Obey robots.txt rules
 ROBOTSTXT_OBEY = False
@@ -39,9 +52,10 @@ DOWNLOAD_DELAY = 0.5
 # Disable cookies (enabled by default)
 COOKIES_ENABLED = False
 
-# 此处的LOG LEVEL最好设置为INFO，这样输出的结果可以直接拷贝到迅雷进行批量下载
-LOG_LEVEL = 'INFO'
-LOG_FILE = "./scrapy-%s.log" % datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
+# 此处的LOG LEVEL最好设置为INFO，避免大量无用数据
+LOG_LEVEL = 'DEBUG'
+# 解注释此行则保存到文件中
+# LOG_FILE = "./scrapy-%s.log" % datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
 
 # Disable Telnet Console (enabled by default)
 # TELNETCONSOLE_ENABLED = False
@@ -73,7 +87,7 @@ LOG_FILE = "./scrapy-%s.log" % datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
 # Configure item pipelines
 # See http://scrapy.readthedocs.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
-    # 'pornhub.pipelines.pornhubFilesPipeline': 1,
+    'pornhub.pipelines.pornhubFilesPipeline': 1,
 }
 
 CURRENT_DIR = os.path.abspath(os.curdir)
