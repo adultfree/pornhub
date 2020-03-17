@@ -24,11 +24,9 @@ NEWSPIDER_MODULE = 'pornhub.spiders'
 DOWNLOAD_MP4_VIDEO = False
 DOWNLOAD_WEBM_VIDEO = False
 
-# 将该视频内的相关视频也下载下来
-CRAWL_RELATED_VIDEOS = True
 # 相关视频下载的深度，默认下载当前页面的视频(不下载相关视频)
 # 注意：每增加一层深度，下载视频数会呈指数级增加
-CRAWL_RELATED_DEPTH = 1
+DEPTH_LIMIT = 1
 
 # 以下类型的视频不下载(暂未实现)
 CATEGORY_BLACK_LIST = [

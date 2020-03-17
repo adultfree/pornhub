@@ -53,11 +53,9 @@ DOWNLOAD_WEBM_VIDEO = False
 * 对top_rated而言，只下载主页上展示的所有视频
 
 ```python
-# 将该视频内的相关视频也下载下来
-CRAWL_RELATED_VIDEOS = True
 # 相关视频下载的深度，默认下载当前页面的视频(不下载相关视频)
 # 注意：每增加一层深度，下载视频数会呈指数级增加
-CRAWL_RELATED_DEPTH = 1
+DEPTH_LIMIT = 1
 ```
 
 另外，我仅提取画质最高的版本链接。毕竟越清晰，就越真实 :-)

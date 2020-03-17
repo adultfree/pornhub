@@ -7,13 +7,15 @@ import scrapy
 
 
 class WebmItem(scrapy.Item):
-    wurl = scrapy.Field()
+    url = scrapy.Field()
+    filename = scrapy.Field()
     key = scrapy.Field()
     title = scrapy.Field()
 
 
 class Mp4Item(scrapy.Item):
-    murl = scrapy.Field()
+    url = scrapy.Field()
+    filename = scrapy.Field()
     key = scrapy.Field()
     title = scrapy.Field()
     categories = scrapy.Field()
