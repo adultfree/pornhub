@@ -22,7 +22,7 @@ class Spider(scrapy.Spider):
         item['pornstars'] = list(map(lambda x: x.strip(), response.xpath('//div[@class="pornstarsWrapper"]/a/text()').extract()))
         item['productions'] = list(map(lambda x: x.strip(), response.xpath('//div[@class="productionWrapper"]/a/text()').extract()))
         item['tags'] = list(map(lambda x: x.strip(), response.xpath('//div[@class="tagsWrapper"]/a/text()').extract()))
-        item['url'] = self.exeJs(''.join(response.xpath('//div[@id="player"]/script[1]/text()').extract_first().split("\n")[:-8]))
+        item['murl'] = self.exeJs(''.join(response.xpath('//div[@id="player"]/script[1]/text()').extract_first().split("\n")[:-8]))
         yield item
         if settings.CRAWL_RELATED_VIDEOS and depth < settings.CRAWL_RELATED_DEPTH:
             items = self.get_recommended_items(response)
@@ -38,7 +38,7 @@ class Spider(scrapy.Spider):
         webems = response.xpath('//*[@class="phimage"]/div/a/img/@data-mediabook').extract()
         for (key, title, url) in zip(recommends, titles, webems):
             item = WebmItem()
-            item["url"] = url
+            item["wurl"] = url
             item["key"] = key
             item["title"] = title
             items.append(item)
@@ -51,7 +51,7 @@ class Spider(scrapy.Spider):
         webems = response.xpath("//div[@class='video-wrapper js-relatedRecommended']//div[@class='phimage']/div/a/img/@data-mediabook").extract()
         for (key, title, url) in zip(recommends, titles, webems):
             item = WebmItem()
-            item["url"] = url
+            item["wurl"] = url
             item["key"] = key
             item["title"] = title
             items.append(item)

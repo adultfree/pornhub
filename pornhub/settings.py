@@ -57,7 +57,7 @@ DOWNLOAD_DELAY = 0.5
 COOKIES_ENABLED = False
 
 # 此处的LOG LEVEL最好设置为INFO，避免大量无用数据
-LOG_LEVEL = 'DEBUG'
+LOG_LEVEL = 'INFO'
 # 解注释此行则保存到文件中
 # LOG_FILE = "./scrapy-%s.log" % datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
 
