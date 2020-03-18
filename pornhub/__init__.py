@@ -1,23 +1,30 @@
 import datetime
+import json
 import logging
 import os
-import pickle
+
+from pornhub.settings import FILES_STORE, DOWNLOAD_MP4_VIDEO, DOWNLOAD_WEBM_VIDEO, DATA_FILE_STORE
 
 
 def setup_logger(logger_name, log_file, level=logging.INFO):
     log_setup = logging.getLogger(logger_name)
     fileHandler = logging.FileHandler(log_file, mode='a')
-    streamHandler = logging.StreamHandler()
     log_setup.setLevel(level)
     log_setup.addHandler(fileHandler)
-    log_setup.addHandler(streamHandler)
+    # 不跟随parent logger
+    log_setup.propagate = False
+    # 若需要把数据打到屏幕上，则解注释此行
+    # streamHandler = logging.StreamHandler()
+    # log_setup.addHandler(streamHandler)
 
 current_datetime = datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
-setup_logger("webem_logger", "./%s-webem.log" % current_datetime)
-setup_logger("mp4_logger", "./%s-mp4.log" % current_datetime)
+# 不下载的时候，把链接保存到本地目录
+if not DOWNLOAD_WEBM_VIDEO:
+    setup_logger("webem_logger", "./%s-webem.log" % current_datetime)
+if not DOWNLOAD_MP4_VIDEO:
+    setup_logger("mp4_logger", "./%s-mp4.log" % current_datetime)
 
-filename = "./data.pkl"
 data = {}
-if os.path.exists(filename):
-    with open(filename, 'rb') as f:
-        data = pickle.load(f)
+if os.path.exists(DATA_FILE_STORE):
+    with open(DATA_FILE_STORE, 'r') as f:
+        data = json.loads(f.read())

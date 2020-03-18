@@ -49,8 +49,8 @@ DOWNLOAD_WEBM_VIDEO = False
 ```
 
 注意下载深度，默认只提取当前页面的视频。
-* 对related_show而言，只下载`RelatedShow.py`中指定的视频
-* 对top_rated而言，只下载主页上展示的所有视频
+* 对related_show而言，只下载`RelatedShow.py`中指定的视频(及当页的视频简介)
+* 对top_rated而言，只下载主页上展示的所有视频(及视频页面的视频简介)
 
 ```python
 # 相关视频下载的深度，默认下载当前页面的视频(不下载相关视频)

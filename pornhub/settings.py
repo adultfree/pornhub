@@ -41,12 +41,12 @@ TAGS_BLACK_LIST = [
 ROBOTSTXT_OBEY = False
 
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
-CONCURRENT_REQUESTS = 64
+CONCURRENT_REQUESTS = 8
 
 # Configure a delay for requests for the same website (default: 0)
 # See http://scrapy.readthedocs.org/en/latest/topics/settings.html#download-delay
 # See also autothrottle settings and docs
-DOWNLOAD_DELAY = 0.5
+DOWNLOAD_DELAY = 0
 # The download delay setting will honor only one of:
 # CONCURRENT_REQUESTS_PER_DOMAIN = 16
 # CONCURRENT_REQUESTS_PER_IP = 16
@@ -93,8 +93,8 @@ ITEM_PIPELINES = {
 }
 
 CURRENT_DIR = os.path.abspath(os.curdir)
-IMAGES_STORE = os.path.join(CURRENT_DIR, "data")
 FILES_STORE = os.path.join(CURRENT_DIR, "data")
+DATA_FILE_STORE = os.path.join(CURRENT_DIR, "data", "data.json")
 
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See http://doc.scrapy.org/en/latest/topics/autothrottle.html
@@ -117,3 +117,8 @@ FILES_STORE = os.path.join(CURRENT_DIR, "data")
 # HTTPCACHE_IGNORE_HTTP_CODES = []
 # HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
 RETRY_TIMES = 10
+
+# 下载超时时间，如果这么长时间还未下载成功则认为下载失败
+DOWNLOAD_TIMEOUT = 10000
+DOWNLOAD_MAXSIZE = 0
+DOWNLOAD_WARNSIZE = 0

@@ -1,9 +1,9 @@
-import pickle
+import json
 import re
 
 import js2py
 
-from pornhub import data
+from pornhub import data, DATA_FILE_STORE
 from pornhub.items import *
 
 
@@ -59,8 +59,8 @@ class Spider(scrapy.Spider):
         return items
 
     def closed(self, reason):
-        with open('./data.pkl', 'wb') as f:
-            pickle.dump(data, f, pickle.HIGHEST_PROTOCOL)
+        with open(DATA_FILE_STORE, 'w') as f:
+            f.write(json.dumps(data, indent=True))
 
     def exeJs(self, js):
         flashvars = re.findall('flashvars_\d+', js)[0]
