@@ -21,19 +21,23 @@ class Spider(scrapy.Spider):
         item['pornstars'] = list(map(lambda x: x.strip(), response.xpath('//div[@class="pornstarsWrapper"]/a/text()').extract()))
         item['productions'] = list(map(lambda x: x.strip(), response.xpath('//div[@class="productionWrapper"]/a/text()').extract()))
         item['tags'] = list(map(lambda x: x.strip(), response.xpath('//div[@class="tagsWrapper"]/a/text()').extract()))
-        item['url'] = self.exeJs(''.join(response.xpath('//div[@id="player"]/script[1]/text()').extract_first().split("\n")[:-8]))
-        item['filename'] = item['url'].split("?")[0].split("/")[-1]
-        # 将数据保存到data数据库中
-        if item["key"] not in data:
-            dict_item = dict(item)
-            dict_item.pop("url")
-            data[item["key"]] = dict_item
-        yield item
-        items = self.get_recommended_items(response)
-        for item in items:
+        selectors = response.xpath('//div[@id="player"]/script[1]/text()')
+        if len(selectors) > 0:
+            item['url'] = self.exeJs(''.join(selectors.extract_first().split("\n")[:-4]))
+            item['filename'] = item['url'].split("?")[0].split("/")[-1]
+            # 将数据保存到data数据库中
+            if item["key"] not in data:
+                dict_item = dict(item)
+                dict_item.pop("url")
+                data[item["key"]] = dict_item
             yield item
-            url = 'https://www.pornhub.com/view_video.php?viewkey=%s' % item["key"]
-            yield scrapy.Request(url, callback=self.parse_detail)
+            items = self.get_recommended_items(response)
+            for item in items:
+                yield item
+                url = 'https://www.pornhub.com/view_video.php?viewkey=%s' % item["key"]
+                yield scrapy.Request(url, callback=self.parse_detail)
+        else:
+            self.logger.info("视频下载失败: %s", str(item))
 
     def get_mainpage_items(self, response):
         recommends = map(lambda x: x.split("=")[-1], response.xpath('//*[@class="phimage"]/div/a/@href').extract())
@@ -42,9 +46,9 @@ class Spider(scrapy.Spider):
         return self.get_webm_items(recommends, titles, webems)
 
     def get_recommended_items(self, response):
-        recommends = map(lambda x: x.split("=")[-1], response.xpath("//div[@class='video-wrapper js-relatedRecommended']//div[@class='phimage']/div/a/@href").extract())
-        titles = response.xpath("//div[@class='video-wrapper js-relatedRecommended']//div[@class='phimage']/div/a/@title").extract()
-        webems = response.xpath("//div[@class='video-wrapper js-relatedRecommended']//div[@class='phimage']/div/a/img/@data-mediabook").extract()
+        recommends = map(lambda x: x.split("=")[-1], response.xpath("//div[@class='video-wrapper js-relatedRecommended']//div[@class='phimage']/a/@href").extract())
+        titles = response.xpath("//div[@class='video-wrapper js-relatedRecommended']//div[@class='phimage']/a/@title").extract()
+        webems = response.xpath("//div[@class='video-wrapper js-relatedRecommended']//div[@class='phimage']/a/img/@data-mediabook").extract()
         return self.get_webm_items(recommends, titles, webems)
 
     def get_webm_items(self, recommends, titles, webems):
@@ -65,6 +69,7 @@ class Spider(scrapy.Spider):
     def exeJs(self, js):
         flashvars = re.findall('flashvars_\d+', js)[0]
         res = js2py.eval_js(js + flashvars)
+        # 对非会员而言，最高清晰度为1080p
         if res.quality_1080p:
             return res.quality_1080p
         if res.quality_720p:

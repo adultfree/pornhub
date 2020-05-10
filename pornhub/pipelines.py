@@ -20,8 +20,10 @@ class pornhubFilesPipeline(FilesPipeline):
         return items
 
     def get_media_requests(self, item, info):
-        # 检查目录中是否存在
-        if os.path.exists(os.path.join(settings.FILES_STORE, item['filename'])):
+        # 检查目录中是否存在该文件或正在迅雷下载该文件
+        filename = os.path.join(settings.FILES_STORE, item['filename'])
+        xldownload_filename = filename + ".xltd"
+        if os.path.exists(filename) or os.path.exists(xldownload_filename):
             info.spider.logger.warning("忽略已下载的文件: %s" % item['filename'])
             return
         if isinstance(item, WebmItem):
