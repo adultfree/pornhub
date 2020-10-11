@@ -46,14 +46,17 @@ class Spider(scrapy.Spider):
         return self.get_webm_items(recommends, titles, webems)
 
     def get_recommended_items(self, response):
-        recommends = map(lambda x: x.split("=")[-1], response.xpath("//div[@class='video-wrapper js-relatedRecommended']//div[@class='phimage']/a/@href").extract())
-        titles = response.xpath("//div[@class='video-wrapper js-relatedRecommended']//div[@class='phimage']/a/@title").extract()
-        webems = response.xpath("//div[@class='video-wrapper js-relatedRecommended']//div[@class='phimage']/a/img/@data-mediabook").extract()
+        recommends = map(lambda x: x.split("=")[-1], response.xpath("//div[@class='video-wrapper js-relatedRecommended js-relatedVideos relatedVideos']//div[@class='phimage']/a/@href").extract())
+        titles = response.xpath("//div[@class='video-wrapper js-relatedRecommended js-relatedVideos relatedVideos']//div[@class='phimage']/a/@title").extract()
+        webems = response.xpath("//div[@class='video-wrapper js-relatedRecommended js-relatedVideos relatedVideos']//div[@class='phimage']/a/img/@data-mediabook").extract()
         return self.get_webm_items(recommends, titles, webems)
 
     def get_webm_items(self, recommends, titles, webems):
         items = []
         for (key, title, url) in zip(recommends, titles, webems):
+            if key == "javascript:void(0)":
+                # 跳过仅会员查看
+                continue
             item = WebmItem()
             item["url"] = url
             item["filename"] = url.split("?")[0].split("/")[-1]

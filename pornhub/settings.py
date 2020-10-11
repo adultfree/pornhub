@@ -24,7 +24,7 @@ NEWSPIDER_MODULE = 'pornhub.spiders'
 DOWNLOAD_MP4_VIDEO = False
 DOWNLOAD_WEBM_VIDEO = False
 
-# 相关视频下载的深度，默认下载当前页面的视频(不下载相关视频)
+# 相关视频下载的深度，默认下载当前页面的视频(不下载相关视频)和当前页面推荐视频的动图
 # 注意：每增加一层深度，下载视频数会呈指数级增加，而每个链接的有效时间有限，深度最好不要超过4。
 DEPTH_LIMIT = 1
 
