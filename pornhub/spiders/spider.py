@@ -23,7 +23,7 @@ class Spider(scrapy.Spider):
         item['tags'] = list(map(lambda x: x.strip(), response.xpath('//div[@class="tagsWrapper"]/a/text()').extract()))
         selectors = response.xpath('//div[@id="player"]/script[1]/text()')
         if len(selectors) > 0:
-            item['url'] = self.exeJs(''.join(selectors.extract_first().split("\n")[:-4]))
+            item['url'] = self.exeJs(''.join(selectors.extract_first().split("playerObjList")[0]))
             item['filename'] = item['url'].split("?")[0].split("/")[-1]
             # 将数据保存到data数据库中
             if item["key"] not in data:
@@ -40,9 +40,9 @@ class Spider(scrapy.Spider):
             self.logger.info("视频下载失败: %s", str(item))
 
     def get_mainpage_items(self, response):
-        recommends = map(lambda x: x.split("=")[-1], response.xpath('//*[@class="phimage"]/div/a/@href').extract())
-        titles = response.xpath('//*[@class="phimage"]/div/a/@title').extract()
-        webems = response.xpath('//*[@class="phimage"]/div/a/img/@data-mediabook').extract()
+        recommends = map(lambda x: x.split("=")[-1], response.xpath('//*[@class="phimage"]/a/@href').extract())
+        titles = response.xpath('//*[@class="phimage"]/a/@title').extract()
+        webems = response.xpath('//*[@class="phimage"]/a/img/@data-mediabook').extract()
         return self.get_webm_items(recommends, titles, webems)
 
     def get_recommended_items(self, response):
